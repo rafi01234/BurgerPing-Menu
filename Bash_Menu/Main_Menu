@@ -1,0 +1,67 @@
+#!/bin/bash
+# Bash Main Menu
+
+# Quotes for funny quotes
+quote[0]="Deleted code is debugged code"
+quote[1]="It's not a bug, it's a feature"
+quote[2]="Knock, knock ... Who's there? ...  *very long pause* ... Java"
+rand=$[ $RANDOM % 3 ]
+
+#title banner
+figlet -f 3d.flf "BurgerPing" | lolcat -S 60 -p 5
+
+echo -e "
+\e[32m \ v / _ __  ___   ___  _____ _  _|  \| |_   _ _   _ _   _ ___ ___                       ___               _  _          
+\e[33m  > < | '_ \| \ \ / / |/ / __) |/ /     | | | ( \ / | \ / ) __|   )                     /   \  __ _  _ __ (_)| |_   ___  
+\e[92m / ^ \| | | | |\ v /|   <> _)| / /| |\  | |_| |\ v / \ v /> _) | |         __          / /\ / / _ || __|| || __| / _ \  
+\e[93m/_/ \_\_| | |\_)> < |_|\_\___)__/ |_| \_|\___/  | |   | | \___) \_)      / _|___      / /_// | (_| || |   | || |_ | (_) |
+\e[32m          | |  / ^ \                            | |   | |                > _|_ _|    /___,'   \__,_||_|   |_| \__| \___/ 
+\e[33m          |_| /_/ \_\                           |_|   |_|                \_____| 
+\e[0m
+
+"
+
+#name directory
+echo "Please choose a directory name for your reports. All reports will default to this directory. All options will produce a report. "
+read -p $'\e[01;37mDirectory Name: \e[0m' dirname
+mkdir $dirname
+export dirname=$dirname
+
+#define array for menu options
+PS3=$'\e[01;37mPlease enter your choice: \e[0m'
+options=("Nmap" "Alternative API Options" "IP Ping" "Reports" "Funny Quote" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Nmap")
+            clear
+	    echo
+	    ./Nmap_options
+            ;;
+        "Alternative API Options")
+            clear
+	    echo 
+	    ./API_options
+            ;;
+        "IP Ping")
+            clear
+	    echo 
+	    ./Ping.sh
+	    ;;
+    	"Reports")
+		clear
+		echo 
+		./Reports
+		;;
+        "Funny Quote")
+	    echo -e "\e[93m${quote[$rand]}"
+            ;;	    
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+clear
+
+

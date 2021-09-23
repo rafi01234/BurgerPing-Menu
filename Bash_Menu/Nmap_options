@@ -1,0 +1,49 @@
+#!/bin/bash
+# Bash Nmap Menu
+
+#title banner
+figlet -f 3d.flf "Nmap Options" | lolcat -S 60 -p 5
+
+#define array for menu options
+PS3=$'\e[01;37mPlease enter your Nmap choice: \e[0m'
+options=("Pingsweeper" "Common Ports" "Custom Ports" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Pingsweeper")
+	    echo "You chose Pingsweeper"
+	    echo "Which device(s) do you want to scan? (eg. 192.168.1.1 / 192.168.1.1-255 / 192.168.1.0/24) ";
+	    read -p "IP address(es): " ip
+		echo "You typed $ip"
+            nmap -sn -oG - $ip | tee $dirname/Pingsweeper.txt
+	    ;;
+        "Common Ports")
+            echo "You chose Common Ports Scan" 
+	    echo "Which device(s) do you want to scan? (eg. 192.168.1.1 / 192.168.1.1-255 / 192.168.1.0/24) ";
+	    read -p "IP address(es): " ip
+	    	echo "You typed $ip"
+	    nmap -F $ip | tee $dirname/Common_Ports.txt
+	    ;;
+        "Custom Ports")
+	    echo "You chose Custom Port Scan"
+	    echo "Which device(s) and port(s) do you want to scan? (eg. 192.168.1.1 / 192.168.1.1-255 / 192.168.1.0/24) (eg. 22, 1-100) ";
+	    read -p "IP address(es): " ip
+	    read -p "Port(s): " port
+	        echo "You typed port $port on IP $ip"
+	    nmap -p $port $ip | tee $dirname/Custom_Ports.txt
+	    ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done
+clear
+#display main menu options
+figlet -f 3d.flf "BurgerPing" | lolcat -S 60 -p 5
+echo "1) Nmap
+2) Alternative API Options
+3) IP Ping
+4) Reports
+5) Funny Quote
+6) Quit"

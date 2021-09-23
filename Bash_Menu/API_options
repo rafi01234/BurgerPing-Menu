@@ -1,0 +1,69 @@
+#!/bin/bash
+# API Menu
+
+#title banner
+figlet -f 3d.flf "API Options" | lolcat -S 60 -p 5
+
+#define array for menu options
+PS3=$'\e[01;37mPlease select your choice: \e[0m'
+options=("DNS Lookup" "Reverse DNS Lookup" "GeoIP Lookup" "Hostname Server Lookup" "HTTP Headers" "Page Links" "AS Lookup" "Quit")
+select opt in "${options[@]}"
+do
+	case $opt in
+		"DNS Lookup")
+			echo "Which domain do you want to look up? (eg. google.com) "
+			read -p "Domain: " domain
+			curl https://api.hackertarget.com/dnslookup/?q=$domain | tee $dirname/DNS_Lookup.txt
+			echo
+			;;
+		"Reverse DNS Lookup")
+			echo "Which IP address do you want to reverse lookup? (eg. 8.8.8.8) "
+			read -p "IP address: " ip
+			curl https://api.hackertarget.com/reversedns/?q=$ip | tee $dirname/Reverse_DNS_Lookup.txt
+			echo
+			;;
+		"GeoIP Lookup")
+			echo "Which IP address do you want to locate? (eg. 8.8.8.8) "
+			read -p "IP address: " ip
+			curl https://api.hackertarget.com/geoip/?q=$ip | tee $dirname/GeoIP_Lookup.txt
+			echo
+			;;
+		"Hostname Server Lookup")
+			echo "Which hostname server IP address do you want to lookup? (eg. 8.8.8.8) "
+			read -p "Server IP address: " ip
+			curl https://api.hackertarget.com/reverseiplookup/?q=$ip | tee $dirname/Hostname_Server_Lookup.txt
+			echo
+			;;
+		"HTTP Headers")
+			echo "Which server do you want to check? (eg. www.google.com) "
+			read -p "Server address: " server
+			curl https://api.hackertarget.com/httpheaders/?q=$server | tee $dirname/HTTP_Headers.txt
+			;;
+		"Page Links")
+			echo "Which site page would you like to check for page links? (eg. www.google.com) "
+			read -p "Web page: " page
+			curl https://api.hackertarget.com/pagelinks/?q=$page | tee $dirname/Page_Links.txt
+			;;
+		"AS Lookup")
+			echo "Which IP address do you want to check ownership of? (eg. 8.8.8.8) "
+			read -p "IP address: " ip
+			curl https://api.hackertarget.com/aslookup/?q=$ip | tee $dirname/AS_Lookup.txt
+			echo
+			;;
+		"Quit")
+			clear
+			break
+			;;
+		*) echo "Invalid Option $REPLY" ;;
+
+	esac
+done
+clear
+#display main menu options
+figlet -f 3d.flf "BurgerPing" | lolcat -S 60 -p 5
+echo "1) Nmap
+2) Alternative API Options
+3) IP Ping
+4) Reports
+5) Funny Quote
+6) Quit"

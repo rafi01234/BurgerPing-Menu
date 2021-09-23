@@ -1,0 +1,50 @@
+#!/bin/bash
+# Bash Menu Reporting
+
+#title banner
+figlet -f 3d.flf "Reports" | lolcat -S 60 -p 5
+
+#define array for menu options
+PS3=$'\e[01;37mPlease choose which report you would like to produce: \e[0m'
+options=("IP Address Report" "Quit")
+select opt in "${options[@]}"
+do
+	case $opt in
+		"IP Address Report")
+			echo "Which IP address do you want a report on? (eg. 8.8.8.8) "
+			read -p "IP Address: " ip
+			echo "Reverse DNS Lookup" > $dirname/$ip.txt
+			curl https://api.hackertarget.com/reversedns/?q=$ip >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "GeoIP Lookup" >> $dirname/$ip.txt
+			curl	https://api.hackertarget.com/geoip/?q=$ip >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "Reverse IP Lookup" >> $dirname/$ip.txt
+			curl	https://api.hackertarget.com/reverseiplookup/?q=$ip >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "AS Lookup" >> $dirname/$ip.txt
+			curl	https://api.hackertarget.com/aslookup/?q=$ip >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo "" >> $dirname/$ip.txt
+			echo
+			;;
+		"Quit")
+			clear
+			break
+			;;
+		*) echo "Invalid Option $REPLY" ;;
+	esac
+done
+clear
+#display main menu options
+figlet -f 3d.flf "BurgerPing" | lolcat -S 60 -p 5
+echo "1) Nmap
+2) Alternative API Options
+3) IP Ping
+4) Reports
+5) Funny Quote
+6) Quit"
+
